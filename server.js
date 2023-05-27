@@ -84,7 +84,8 @@ app.get("/api/fetch-users", async (req, res) => {
 // Get all users from the database
 app.get("/api/users", async (req, res) => {
   try {
-    const users = await User.find().sort({ created_at: -1 });
+    const limit = 8;
+    const users = await User.find().sort({ created_at: -1 }).limit(limit);
     res.json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
