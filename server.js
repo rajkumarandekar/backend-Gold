@@ -57,6 +57,8 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
+app.use(cors({ origin: "https://frontend-goldstone.onrender.com" }));
+
 // API Routes
 
 // Fetch users from external API and store in the database
@@ -90,12 +92,6 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
-// Update a user in the database
-// ...
-
-// Update a user in the database
-
-// Update a user in the database
 // ...
 
 // Update a user in the database
