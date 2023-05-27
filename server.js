@@ -84,7 +84,7 @@ app.get("/api/fetch-users", async (req, res) => {
 // Get all users from the database
 app.get("/api/users", async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().sort({ created_at: -1 });
     res.json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -93,6 +93,28 @@ app.get("/api/users", async (req, res) => {
 });
 
 // ...
+app.post("/api/users", async (req, res) => {
+  const { name, email, gender, status } = req.body;
+
+  try {
+    const lastUser = await User.findOne().sort({ id: -1 });
+    const newId = lastUser ? lastUser.id + 1 : 1;
+
+    const newUser = new User({
+      id: newId,
+      name,
+      email,
+      gender,
+      status,
+    });
+    await newUser.save();
+
+    res.json(newUser);
+  } catch (error) {
+    console.error("Error adding user:", error);
+    res.status(500).json({ error: "Failed to add user." });
+  }
+});
 
 // Update a user in the database
 app.put("/api/users/:id", async (req, res) => {
@@ -113,6 +135,17 @@ app.put("/api/users/:id", async (req, res) => {
 });
 
 // ...
+app.delete("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await User.findOneAndDelete({ id });
+    res.json({ message: "User deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Failed to delete user." });
+  }
+});
 
 // Export users to a CSV file
 app.get("/api/export-users", async (req, res) => {
