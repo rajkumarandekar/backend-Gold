@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-app.use(cors({ origin: "https://frontend-goldstone.onrender.com" }));
+app.use(cors({ origin: "https://relaxed-lollipop-47706d.netlify.app" }));
 
 // API Routes
 
